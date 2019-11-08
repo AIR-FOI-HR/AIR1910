@@ -1,0 +1,296 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `hangio` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
+USE `hangio` ;
+
+-- -----------------------------------------------------
+-- Table `hangio`.`city`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`city` (
+  `idcity` INT NOT NULL AUTO_INCREMENT ,
+  `city_name` VARCHAR(60) NULL ,
+  PRIMARY KEY (`idcity`) ,
+  UNIQUE INDEX `id_city_UNIQUE` (`idcity` ASC) ,
+  UNIQUE INDEX `city_name_UNIQUE` (`city_name` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hangio`.`user`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`user` (
+  `iduser` INT NOT NULL AUTO_INCREMENT ,
+  `first_name` VARCHAR(45) NOT NULL ,
+  `last_name` VARCHAR(45) NOT NULL ,
+  `email` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(45) NOT NULL ,
+  `dob` DATE NULL ,
+  `photo` VARCHAR(255) NULL ,
+  `notifications` TINYINT(1) NULL ,
+  `language` VARCHAR(20) NULL ,
+  `city_id` INT NOT NULL ,
+  PRIMARY KEY (`iduser`) ,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
+  INDEX `fk_user_city_idx` (`city_id` ASC) ,
+  CONSTRAINT `fk_user_city`
+    FOREIGN KEY (`city_id` )
+    REFERENCES `hangio`.`city` (`idcity` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hangio`.`event_category`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`event_category` (
+  `idevent_category` INT NOT NULL AUTO_INCREMENT ,
+  `category_title` VARCHAR(45) NULL ,
+  PRIMARY KEY (`idevent_category`) ,
+  UNIQUE INDEX `idevent_category_UNIQUE` (`idevent_category` ASC) ,
+  UNIQUE INDEX `category_title_UNIQUE` (`category_title` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hangio`.`event`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`event` (
+  `idevent` INT NOT NULL AUTO_INCREMENT ,
+  `title` VARCHAR(60) NOT NULL ,
+  `start_date` DATETIME NOT NULL ,
+  `address` VARCHAR(80) NOT NULL ,
+  `description` VARCHAR(255) NOT NULL ,
+  `capacity` INT NULL ,
+  `registered` INT NULL ,
+  `creator_id` INT NOT NULL ,
+  `city_id` INT NOT NULL ,
+  `event_category_id` INT NOT NULL ,
+  PRIMARY KEY (`idevent`) ,
+  UNIQUE INDEX `idevent_UNIQUE` (`idevent` ASC) ,
+  INDEX `fk_event_user_idx` (`creator_id` ASC) ,
+  INDEX `fk_event_city_idx` (`city_id` ASC) ,
+  INDEX `fk_event_category_idx` (`event_category_id` ASC) ,
+  CONSTRAINT `fk_event_user`
+    FOREIGN KEY (`creator_id` )
+    REFERENCES `hangio`.`user` (`iduser` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_city`
+    FOREIGN KEY (`city_id` )
+    REFERENCES `hangio`.`city` (`idcity` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_category`
+    FOREIGN KEY (`event_category_id` )
+    REFERENCES `hangio`.`event_category` (`idevent_category` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hangio`.`comment`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`comment` (
+  `event_id` INT NOT NULL ,
+  `user_id` INT NOT NULL ,
+  `text` VARCHAR(255) NOT NULL ,
+  `post_time` TIME NOT NULL ,
+  INDEX `fk_comment_event_idx` (`event_id` ASC) ,
+  INDEX `fk_comment_user_idx` (`user_id` ASC) ,
+  CONSTRAINT `fk_comment_event`
+    FOREIGN KEY (`event_id` )
+    REFERENCES `hangio`.`event` (`idevent` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_user`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `hangio`.`user` (`iduser` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hangio`.`user_event`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hangio`.`user_event` (
+  `user_id` INT NOT NULL ,
+  `event_id` INT NOT NULL ,
+  INDEX `fk_user_event_idx` (`event_id` ASC) ,
+  INDEX `fk_event_user_idx` (`user_id` ASC) ,
+  CONSTRAINT `fk_user_has_event`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `hangio`.`user` (`iduser` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_has_user`
+    FOREIGN KEY (`event_id` )
+    REFERENCES `hangio`.`event` (`idevent` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `hangio` ;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `hangio`.`city`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `hangio`;
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (1, 'Bakar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (2, 'Beli Manastir');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (3, 'Belišće');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (4, 'Benkovac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (5, 'Biograd na Moru');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (6, 'Bjelovar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (7, 'Buje-Buie');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (8, 'Buzet');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (9, 'Cres');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (10, 'Crikvenica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (11, 'Čabar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (12, 'Čakovec');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (13, 'Čazma');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (14, 'Daruvar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (15, 'Delnice');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (16, 'Donja Stubica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (17, 'Donji Miholjac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (18, 'Drniš');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (19, 'Dubrovnik');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (20, 'Duga Resa');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (21, 'Dugo Selo');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (22, 'Đakovo');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (23, 'Đurđevac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (24, 'Garešnica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (25, 'Glina');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (26, 'Gospić');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (27, 'Grubišno Polje');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (28, 'Hrvatska Kostajnica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (29, 'Hvar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (30, 'Ilok');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (31, 'Imotski');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (32, 'Ivanec');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (33, 'Ivanić-Grad');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (34, 'Jastrebarsko');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (35, 'Karlovac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (36, 'Kastav');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (37, 'Kaštela');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (38, 'Klanjec');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (39, 'Knin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (40, 'Komiža');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (41, 'Koprivnica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (42, 'Korčula');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (43, 'Kraljevica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (44, 'Krapina');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (45, 'Križevci');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (46, 'Krk');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (47, 'Kutina');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (48, 'Kutjevo');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (49, 'Labin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (50, 'Lepoglava');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (51, 'Lipik');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (52, 'Ludbreg');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (53, 'Makarska');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (54, 'Mali Lošinj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (55, 'Metković');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (56, 'Mursko Središće');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (57, 'Našice');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (58, 'Nin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (59, 'Nova Gradiška');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (60, 'Novalja');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (61, 'Novi Marof');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (62, 'Novi Vinodolski');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (63, 'Novigrad-Cittanova');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (64, 'Novska');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (65, 'Obrovac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (66, 'Ogulin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (67, 'Omiš');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (68, 'Opatija');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (69, 'Opuzen');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (70, 'Orahovica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (71, 'Oroslavje');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (72, 'Osijek');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (73, 'Otočac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (74, 'Otok');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (75, 'Ozalj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (76, 'Pag');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (77, 'Pakrac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (78, 'Pazin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (79, 'Petrinja');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (80, 'Pleternica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (81, 'Ploče');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (82, 'Popovača');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (83, 'Poreč-Parenzo');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (84, 'Požega');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (85, 'Pregrada');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (86, 'Prelog');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (87, 'Pula-Pola');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (88, 'Rab');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (89, 'Rijeka');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (90, 'Rovinj-Rovigno');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (91, 'Samobor');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (92, 'Senj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (93, 'Sinj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (94, 'Sisak');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (95, 'Skradin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (96, 'Slatina');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (97, 'Slavonski Brod');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (98, 'Slunj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (99, 'Solin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (100, 'Split');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (101, 'Stari Grad');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (102, 'Supetar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (103, 'Sveta Nedelja');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (104, 'Sveti Ivan Zelina');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (105, 'Šibenik');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (106, 'Trilj');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (107, 'Trogir');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (108, 'Umag-Umago');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (109, 'Valpovo');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (110, 'Varaždin');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (111, 'Varaždinske Toplice');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (112, 'Velika Gorica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (113, 'Vinkovci');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (114, 'Virovitica');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (115, 'Vis');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (116, 'Vodice');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (117, 'Vodnjan-Dignano');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (118, 'Vrbovec');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (119, 'Vrbovsko');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (120, 'Vrgorac');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (121, 'Vrlika');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (122, 'Vukovar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (123, 'Zabok');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (124, 'Zadar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (125, 'Zagreb');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (126, 'Zaprešić');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (127, 'Zlatar');
+INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (128, 'Županja');
+
+-- -----------------------------------------------------
+-- Data for table `hangio`.`event_category`
+-- -----------------------------------------------------
+
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (1, 'Sport');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (2, 'Movies');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (3, 'Coffee/Drink');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (4, 'Concert');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (5, 'Night out');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (6, 'Walk');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (7, 'Casual hanging out');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (8, 'House party');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (9, 'Theatre play');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (10, 'Museum visit');
+INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (11, 'Other');
+
+
+
+COMMIT;

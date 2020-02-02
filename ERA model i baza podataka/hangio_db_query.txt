@@ -279,17 +279,17 @@ INSERT INTO `hangio`.`city` (`idcity`, `city_name`) VALUES (128, 'Županja');
 -- Data for table `hangio`.`event_category`
 -- -----------------------------------------------------
 
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (1, 'Sport');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (2, 'Movies');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (3, 'Coffee/Drink');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (4, 'Concert');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (5, 'Night out');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (6, 'Walk');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (7, 'Casual hanging out');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (8, 'House party');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (9, 'Theatre play');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (10, 'Museum visit');
-INSERT INTO `hangio`.`city` (`idevent_category`, `category_title`) VALUES (11, 'Other');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (1, 'Sport');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (2, 'Movies');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (3, 'Coffee/Drink');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (4, 'Concert');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (5, 'Night out');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (6, 'Walk');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (7, 'Casual hanging out');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (8, 'House party');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (9, 'Theatre play');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (10, 'Museum visit');
+INSERT INTO `hangio`.`event_category` (`idevent_category`, `category_title`) VALUES (11, 'Other');
 
 
 

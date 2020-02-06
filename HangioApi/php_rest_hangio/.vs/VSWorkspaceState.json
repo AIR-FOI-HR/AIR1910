@@ -4,8 +4,9 @@
     "\\config",
     "\\event",
     "\\korisnik",
-    "\\models"
+    "\\models",
+    "\\user"
   ],
-  "SelectedNode": "\\event\\create.php",
+  "SelectedNode": "\\user\\read.php",
   "PreviewInSolutionExplorer": false
 }

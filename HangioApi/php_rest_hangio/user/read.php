@@ -9,7 +9,7 @@
 	$database = new Database();
 	$db = $database->connect();
 
-	$user = new event($db);
+	$user = new user($db);
 
 	$result = $user->read();
 	$num = $result->rowCount();
@@ -22,7 +22,7 @@
 			extract($row);
 
 			$user_item = array(
-			'iduser' => $user,
+			'iduser' => $iduser,
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'email' => $email,

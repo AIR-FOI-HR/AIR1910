@@ -1,5 +1,5 @@
 	<?php
-	class event {
+	class user {
 		private $conn;
 
 		public $iduser;

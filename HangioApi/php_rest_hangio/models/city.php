@@ -32,4 +32,20 @@
 
 			return $stmt;
 		}
+
+		public function read_param_name() {
+			$query = 'SELECT
+			city_name from city
+			WHERE
+			idcity = ?
+			ORDER BY idcity';
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParam(1, $this->idcity);
+
+			$stmt->execute();
+
+			return $stmt;
+		}
 	}

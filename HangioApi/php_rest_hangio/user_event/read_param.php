@@ -38,6 +38,7 @@
 	} else {
 	echo json_encode(
 		array('message' => 'Korisnik nije prijavio dolazak ni na jedan dogaðaj')
+
 	);
 	}
 

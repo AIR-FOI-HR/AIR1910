@@ -36,7 +36,10 @@
 
 			array_push($event_arr['data'], $event_item);
 		}
-		echo json_encode($event_arr);
+		$rez = json_encode($event_arr);
+		$rez = trim($rez, '{"data":');
+		$rez = rtrim($rez, '}');
+		echo $rez;
 
 	} else {
 	echo json_encode(

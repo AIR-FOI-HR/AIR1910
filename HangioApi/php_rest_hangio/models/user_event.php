@@ -30,4 +30,20 @@
 			printf("Error: %S. \n", $stmt->error);
 			return false;
 		}
+
+		public function read_param() {
+			$query = 'SELECT
+			* from user_event
+			WHERE
+			user_id = ?
+			ORDER BY event_id';
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParam(1, $this->user_id);
+
+			$stmt->execute();
+
+			return $stmt;
+		}
 	}
